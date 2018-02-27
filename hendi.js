@@ -66,6 +66,9 @@ var upperArmWidth = 1;
 var lowerArmWidth = 1;
 var upperLegWidth = 1;
 var lowerLegWidth = 1;
+var pinkyBase = 0.30;
+var pinkyMid = 0.25;
+var pinkyTop = 0.25;
 var lowerLegHeight = 2.0;
 var upperLegHeight = 3.0;
 var headHeight = 3;
@@ -151,7 +154,7 @@ function initNodes(Id) {
 
     case littliMId:
 
-      m = translate(torsoWidth + upperArmWidth-1, torsoHeight, 0.0);
+      m = translate(torsoWidth + upperArmWidth-1, pinkyMid, 0.0);
       m = mult(m, rotate(theta[littliMId], 1, 0, 0));
       figure[littliMId] = createNode(m, rightUpperArm, baugHId, littliNId);
       break;
@@ -179,7 +182,7 @@ function initNodes(Id) {
 
     case littliNId:
 
-      m = translate(0.0, upperArmHeight, 0.0);
+      m = translate(0.0, pinkyBase, 0.0);
       m = mult(m, rotate(theta[littliNId], 1, 0, 0));
       figure[littliNId] = createNode(m, rightLowerArm, null, null);
       break;
@@ -218,7 +221,7 @@ function torso() {
   instanceMatrix = mult(modelViewMatrix, translate(0.0, 0.5 * torsoHeight, 0.0));
   instanceMatrix = mult(instanceMatrix, scale4(torsoWidth, torsoHeight, 1));
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(instanceMatrix));
-  for (var i = 0; i < 6; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
+  for (var i = 0; i < 12; i++) gl.drawArrays(gl.TRIANGLE_FAN, 4 * i, 4);
 }
 
 function head() {
@@ -302,6 +305,7 @@ function quad(a, b, c, d) {
   pointsArray.push(vertices[c]);
   coloresArray.push(vertexColors[a]);
   pointsArray.push(vertices[d]);
+  
 }
 
 
@@ -474,7 +478,8 @@ window.onload = function init() {
 var render = function() {
 
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
+  gl.cullFace(gl.FRONT_AND_BACK);
+  gl.frontFace(gl.CCW);
   // staðsetja áhorfanda og meðhöndla músarhreyfingu
   var mv = lookAt(vec3(0.0, 0.0, zDist), vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0));
   mv = mult(mv, rotate(spinX, [1, 0, 0]));
