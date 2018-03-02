@@ -74,7 +74,11 @@ var LOWER_LITTL_HEIGHT = 1.1;
 var MIDDLE_LITTL_HEIGHT = 1.08;
 var UPPER_LITTL_HEIGHT = 1;
 
+// paramiters for the size of thum finger
 
+var THUM_WIDTH = 1;
+var LOWER_THUM_HEIGHT = 4.8;
+var UPPER_THUM_HEIGHT = 3.4;
 
 // Shader transformation matrices
 
@@ -92,6 +96,7 @@ var thetaIndex = [ 0, 0, 0];
 var thetaRing = [0, 0, 0];
 var thetaLittle = [0, 0, 0];
 var thetapinky = [0, 0, 0];
+var thetaThum = [0, 0, 0];
 
 var angle = 0;
 
@@ -454,6 +459,28 @@ function upperLitte(){
 }
 
 //----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+
+function lowerThum()
+{
+    var s = scalem(THUM_WIDTH, LOWER_THUM_HEIGHT, THUM_WIDTH);
+    var instanceMatrix = mult( translate( 0.0, 0.5 * LOWER_THUM_HEIGHT, 0.0 ), s);
+    var t = mult(modelViewMatrix, instanceMatrix);
+    gl.uniformMatrix4fv( modelViewMatrixLoc,  false, flatten(t) );
+    gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
+}
+
+//----------------------------------------------------------------------------
+
+function upperThum(){
+    var s = scalem(THUM_WIDTH, UPPER_THUM_HEIGHT, THUM_WIDTH);
+    var instanceMatrix = mult( translate( 0.0, 0.5 * UPPER_THUM_HEIGHT, 0.0 ), s);
+    var t = mult( modelViewMatrix, instanceMatrix);
+    gl.uniformMatrix4fv( modelViewMatrixLoc, false, flatten(t) );
+    gl.drawArrays( gl.TRIANGLES, 0, NumVertices);
+}
+
+//----------------------------------------------------------------------------
 
 
 
@@ -528,6 +555,17 @@ var render = function() {
     modelViewMatrix  = mult(modelViewMatrix, translate(0.0, MIDDLE_LITTL_HEIGHT, 0.0));
     modelViewMatrix  = mult(modelViewMatrix, rotate(thetaLittle[LowerMiddle], 0, 0, 1) );
     upperLitte();
+
+    //----------------------------------------------------------------------------
+    modelViewMatrix = mult(mv, rotate(thetaFuck[Base], 0, 1, 0 ));
+    modelViewMatrix = mult(modelViewMatrix, translate(0, 1, 2.5));
+
+    modelViewMatrix = mult(modelViewMatrix, rotate(thetaThum[MiddleMiddle], 0, 0, 1 ));
+    lowerThum();
+
+    modelViewMatrix  = mult(modelViewMatrix, translate(0.0, MIDDLE_LITTL_HEIGHT, 0.0));
+    modelViewMatrix  = mult(modelViewMatrix, rotate(thetaThum[LowerMiddle], 0, 0, 1) );
+    upperThum();
 
     requestAnimFrame(render);
 }
