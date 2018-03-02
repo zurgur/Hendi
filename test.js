@@ -17,6 +17,7 @@ var zDist = -25.0;
 
 var points = [];
 var colors = [];
+var currentBtn = "middle";
 
 var vertices = [
     vec4( -0.5, -0.5,  0.5, 1.0 ),
@@ -86,9 +87,11 @@ var MiddleMiddle = 1;
 var LowerMiddle = 2;
 
 
-var thetaFuck= [ 0, 0, 0];
-var thetaIndex= [ 0, 0, 0];
-var thetaRing= [0, 0, 0];
+var thetaFuck = [ 0, 0, 0];
+var thetaIndex = [ 0, 0, 0];
+var thetaRing = [0, 0, 0];
+var thetaLittle = [0, 0, 0];
+var thetapinky = [0, 0, 0];
 
 var angle = 0;
 
@@ -208,6 +211,26 @@ window.onload = function init() {
             origY = e.clientY;
         }
     } );
+
+    // btn listeners
+    document.getElementById("btnMiddle").onclick = function(){
+        currentBtn = "middle";
+    }
+    document.getElementById("btnRing").onclick = function(){
+        currentBtn = "ring";
+    }
+    document.getElementById("btnIndex").onclick = function(){
+        currentBtn = "index";
+    }
+    document.getElementById("btnLittle").onclick = function(){
+        currentBtn = "little";
+    }
+    document.getElementById("btnThum1").onclick = function(){
+        currentBtn = "thum1";
+    }
+    document.getElementById("btnThum").onclick = function(){
+        currentBtn = "Thum";
+    }
     
     // Event listener for keyboard
      window.addEventListener("keydown", function(e){
@@ -225,16 +248,48 @@ window.onload = function init() {
 			    thetaFuck[0] = Math.max(-180, thetaFuck[0]-5);
                 break;
             case 65:	// a - snýr neðri armi
-			    thetaFuck[1] = Math.min(90, thetaFuck[1]+5);
+                if(currentBtn === "middle"){
+                    thetaFuck[1] = Math.min(90, thetaFuck[1] + 5);
+                }else if(currentBtn === "ring"){
+                    thetaRing[1] = Math.min(90, thetaRing[1] + 5);
+                }else if(currentBtn === "index"){
+                    thetaIndex[1] = Math.min(90, thetaIndex[1] + 5);
+                }else if(currentBtn === "little"){
+                    thetaLittle[1] = Math.min(90, thetaLittle[1] + 5);
+                }
                 break;
             case 83:	// s - snýr neðri armi
-			    thetaFuck[1] = Math.max(0, thetaFuck[1]-5);
+                if(currentBtn === "middle"){
+                    thetaFuck[1] = Math.max(0, thetaFuck[1] - 5);
+                }else if(currentBtn === "ring"){
+                    thetaRing[1] = Math.max(0, thetaRing[1] - 5);
+                }else if(currentBtn === "index"){
+                    thetaIndex[1] = Math.max(0, thetaIndex[1] - 5);
+                }else if(currentBtn === "little"){
+                    thetaLittle[1] = Math.max(0, thetaLittle[1] - 5);
+                }
                 break;
             case 81:	// q - snýr efri og mið putta
-			    thetaFuck[2] = Math.min(90, thetaFuck[2]+5);
+                if(currentBtn === "middle"){
+                    thetaFuck[2] = Math.min(90, thetaFuck[2] + 5);
+                }else if(currentBtn === "ring"){
+                    thetaRing[2] = Math.min(90, thetaRing[2] + 5);
+                }else if(currentBtn === "index"){
+                    thetaIndex[2] = Math.min(90, thetaIndex[2] + 5);
+                }else if(currentBtn === "little"){
+                    thetaLittle[2] = Math.min(90, thetaLittle[2] + 5);
+                }
                 break;
-            case 87:	// w - snýr efri armi
-			    thetaFuck[2] = Math.max(0, thetaFuck[2]-5);
+            case 87:	// w - snýr neðri putta
+                if(currentBtn === "middle"){
+                    thetaFuck[2] = Math.max(0, thetaFuck[2] - 5);
+                }else if(currentBtn === "ring"){
+                    thetaRing[2] = Math.max(0, thetaRing[2] - 5);
+                }else if(currentBtn === "index"){
+                    thetaIndex[2] = Math.max(0, thetaIndex[2] - 5);
+                }else if(currentBtn === "little"){
+                    thetaLittle[2] = Math.max(0, thetaLittle[2] - 5);
+                }
                 break;
          }
      }  );  
@@ -453,25 +508,25 @@ var render = function() {
 
     modelViewMatrix  = mult(modelViewMatrix, translate(0.0, LOWER_RING_HEIGHT, 0.0));
     modelViewMatrix  = mult(modelViewMatrix, rotate(thetaRing[LowerMiddle], 0, 0, 1) );
-    middleIndex();
+    middleRing();
 
     modelViewMatrix  = mult(modelViewMatrix, translate(0.0, MIDDLE_RING_HEIGHT, 0.0));
     modelViewMatrix  = mult(modelViewMatrix, rotate(thetaRing[LowerMiddle], 0, 0, 1) );
-    upperIndex();
+    upperRing();
 
     //----------------------------------------------------------------------------
     modelViewMatrix = mult(mv, rotate(thetaFuck[Base], 0, 1, 0 ));
     modelViewMatrix = mult(modelViewMatrix, translate(0, BASE_HEIGHT, -1.5));
 
-    modelViewMatrix = mult(modelViewMatrix, rotate(thetaIndex[MiddleMiddle], 0, 0, 1 ));
+    modelViewMatrix = mult(modelViewMatrix, rotate(thetaLittle[MiddleMiddle], 0, 0, 1 ));
     lowerLittle();
 
     modelViewMatrix  = mult(modelViewMatrix, translate(0.0, LOWER_LITTL_HEIGHT, 0.0));
-    modelViewMatrix  = mult(modelViewMatrix, rotate(thetaIndex[LowerMiddle], 0, 0, 1) );
+    modelViewMatrix  = mult(modelViewMatrix, rotate(thetaLittle[LowerMiddle], 0, 0, 1) );
     middleLitte();
 
     modelViewMatrix  = mult(modelViewMatrix, translate(0.0, MIDDLE_LITTL_HEIGHT, 0.0));
-    modelViewMatrix  = mult(modelViewMatrix, rotate(thetaIndex[LowerMiddle], 0, 0, 1) );
+    modelViewMatrix  = mult(modelViewMatrix, rotate(thetaLittle[LowerMiddle], 0, 0, 1) );
     upperLitte();
 
     requestAnimFrame(render);
