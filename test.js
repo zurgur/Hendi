@@ -5,7 +5,7 @@
 //
 //    Hjálmtýr Hafsteinsson, febrúar 2018
 /////////////////////////////////////////////////////////////////
-var NumVertices = 36; //(6 faces)(2 triangles/face)(3 vertices/triangle)
+var NumVertices = 36; //(6 faces)(2 triangles/face)(4 vertices/triangle)
 
 var movement = false;
 var spinX = 0;
@@ -42,14 +42,38 @@ var vertexColors = [
 ];
 
 
-// Parameters controlling the size of the Robot's arm
+// Parameters controlling the size of the midle finger
 
-var BASE_HEIGHT      = 2.0;
-var BASE_WIDTH       = 5.0;
-var LOWER_ARM_HEIGHT = 5.0;
-var LOWER_ARM_WIDTH  = 0.5;
-var UPPER_ARM_HEIGHT = 5.0;
-var UPPER_ARM_WIDTH  = 0.5;
+var BASE_HEIGHT      = 5.0;
+var BASE_WIDTH       = 4.0;
+var LOWER_MIDDLE_HEIGHT = 2.0;
+var LOWER_MIDDLE_WIDTH  = 0.8;
+var MIDDLE_MIDDLE_HEIGHT = 2.0;
+var UPPER_MIDDLE_WIDTH  = 0.8;
+var UPPER_MIDDLE_HEIGHT = 1.5;
+
+// Paramiterst for controling the size of the index finger
+
+var LOWER_INDEX_HEIGHT = 1.6;
+var MIDDLE_INDEX_HEIGHT = 1.55;
+var UPPER_INDEX_HEIGHT = 1.2;
+var INDEX_WIDTH = 0.78;
+
+// Paramiters for ring finger size
+
+var RING_WIDTH = 0.78;
+var LOWER_RING_HEIGHT = 1.6;
+var MIDDLE_RING_HEIGHT = 1.55;
+var UPPER_RING_HEIGHT = 1.2;
+
+//paramiters for the size of little finger
+
+var LITTL_WIDTH = 0.65;
+var LOWER_LITTL_HEIGHT = 1.1;
+var MIDDLE_LITTL_HEIGHT = 1.08;
+var UPPER_LITTL_HEIGHT = 1;
+
+
 
 // Shader transformation matrices
 
@@ -58,11 +82,13 @@ var modelViewMatrix, projectionMatrix;
 // Array of rotation angles (in degrees) for each rotation axis
 
 var Base = 0;
-var LowerArm = 1;
-var UpperArm = 2;
+var MiddleMiddle = 1;
+var LowerMiddle = 2;
 
 
-var theta= [ 0, 0, 0];
+var thetaFuck= [ 0, 0, 0];
+var thetaIndex= [ 0, 0, 0];
+var thetaRing= [0, 0, 0];
 
 var angle = 0;
 
@@ -193,22 +219,22 @@ window.onload = function init() {
                 zDist -= 1.0;
                 break;
             case 90:	// z - snýr stöpli áfram
-			    theta[0] = Math.min(180, theta[0]+5);
+                thetaFuck[0] = Math.min(180, thetaFuck[0]+5);
                 break;
             case 88:	// x - snýr stöpli afturábak
-			    theta[0] = Math.max(-180, theta[0]-5);
+			    thetaFuck[0] = Math.max(-180, thetaFuck[0]-5);
                 break;
             case 65:	// a - snýr neðri armi
-			    theta[1] = Math.min(80, theta[1]+5);
+			    thetaFuck[1] = Math.min(90, thetaFuck[1]+5);
                 break;
             case 83:	// s - snýr neðri armi
-			    theta[1] = Math.max(-80, theta[1]-5);
+			    thetaFuck[1] = Math.max(0, thetaFuck[1]-5);
                 break;
-            case 81:	// q - snýr efri armi
-			    theta[2] = Math.min(170, theta[2]+5);
+            case 81:	// q - snýr efri og mið putta
+			    thetaFuck[2] = Math.min(90, thetaFuck[2]+5);
                 break;
             case 87:	// w - snýr efri armi
-			    theta[2] = Math.max(-170, theta[2]-5);
+			    thetaFuck[2] = Math.max(0, thetaFuck[2]-5);
                 break;
          }
      }  );  
@@ -230,7 +256,7 @@ window.onload = function init() {
 
 
 function base() {
-    var s = scalem(BASE_WIDTH, BASE_HEIGHT, BASE_WIDTH);
+    var s = scalem(1, BASE_HEIGHT, BASE_WIDTH);
     var instanceMatrix = mult( translate( 0.0, 0.5 * BASE_HEIGHT, 0.0 ), s);
     var t = mult(modelViewMatrix, instanceMatrix);
     gl.uniformMatrix4fv(modelViewMatrixLoc,  false, flatten(t) );
@@ -240,9 +266,9 @@ function base() {
 //----------------------------------------------------------------------------
 
 
-function upperArm() {
-    var s = scalem(UPPER_ARM_WIDTH, UPPER_ARM_HEIGHT, UPPER_ARM_WIDTH);
-    var instanceMatrix = mult(translate( 0.0, 0.5 * UPPER_ARM_HEIGHT, 0.0 ),s);    
+function middleMiddle() {
+    var s = scalem(UPPER_MIDDLE_WIDTH, MIDDLE_MIDDLE_HEIGHT, UPPER_MIDDLE_WIDTH);
+    var instanceMatrix = mult(translate( 0.0, 0.5 * MIDDLE_MIDDLE_HEIGHT, 0.0 ),s);    
     var t = mult(modelViewMatrix, instanceMatrix);
     gl.uniformMatrix4fv( modelViewMatrixLoc,  false, flatten(t) );
     gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
@@ -251,16 +277,130 @@ function upperArm() {
 //----------------------------------------------------------------------------
 
 
-function lowerArm()
+function lowerMiddle()
 {
-    var s = scalem(LOWER_ARM_WIDTH, LOWER_ARM_HEIGHT, LOWER_ARM_WIDTH);
-    var instanceMatrix = mult( translate( 0.0, 0.5 * LOWER_ARM_HEIGHT, 0.0 ), s);
+    var s = scalem(LOWER_MIDDLE_WIDTH, LOWER_MIDDLE_HEIGHT, LOWER_MIDDLE_WIDTH);
+    var instanceMatrix = mult( translate( 0.0, 0.5 * LOWER_MIDDLE_HEIGHT, 0.0 ), s);
     var t = mult(modelViewMatrix, instanceMatrix);
     gl.uniformMatrix4fv( modelViewMatrixLoc,  false, flatten(t) );
     gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
 }
 
 //----------------------------------------------------------------------------
+
+function upperMiddle(){
+    var s = scalem(UPPER_MIDDLE_WIDTH, UPPER_MIDDLE_HEIGHT,UPPER_MIDDLE_WIDTH);
+    var instanceMatrix = mult( translate( 0.0, 0.5 * UPPER_MIDDLE_HEIGHT, 0.0 ), s);
+    var t = mult( modelViewMatrix, instanceMatrix);
+    gl.uniformMatrix4fv( modelViewMatrixLoc, false, flatten(t) );
+    gl.drawArrays( gl.TRIANGLES, 0, NumVertices);
+}
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+
+
+function middleIndex() {
+    var s = scalem(INDEX_WIDTH, MIDDLE_INDEX_HEIGHT, INDEX_WIDTH);
+    var instanceMatrix = mult(translate( 0.0, 0.5 * MIDDLE_INDEX_HEIGHT, 0.0 ),s);    
+    var t = mult(modelViewMatrix, instanceMatrix);
+    gl.uniformMatrix4fv( modelViewMatrixLoc,  false, flatten(t) );
+    gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
+}
+
+//----------------------------------------------------------------------------
+
+
+function lowerIndex()
+{
+    var s = scalem(INDEX_WIDTH, LOWER_INDEX_HEIGHT, INDEX_WIDTH);
+    var instanceMatrix = mult( translate( 0.0, 0.5 * LOWER_INDEX_HEIGHT, 0.0 ), s);
+    var t = mult(modelViewMatrix, instanceMatrix);
+    gl.uniformMatrix4fv( modelViewMatrixLoc,  false, flatten(t) );
+    gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
+}
+
+//----------------------------------------------------------------------------
+
+function upperIndex(){
+    var s = scalem(INDEX_WIDTH, UPPER_INDEX_HEIGHT, INDEX_WIDTH);
+    var instanceMatrix = mult( translate( 0.0, 0.5 * UPPER_INDEX_HEIGHT, 0.0 ), s);
+    var t = mult( modelViewMatrix, instanceMatrix);
+    gl.uniformMatrix4fv( modelViewMatrixLoc, false, flatten(t) );
+    gl.drawArrays( gl.TRIANGLES, 0, NumVertices);
+}
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+
+
+function middleRing() {
+    var s = scalem(RING_WIDTH, MIDDLE_RING_HEIGHT, RING_WIDTH);
+    var instanceMatrix = mult(translate( 0.0, 0.5 * MIDDLE_RING_HEIGHT, 0.0 ),s);    
+    var t = mult(modelViewMatrix, instanceMatrix);
+    gl.uniformMatrix4fv( modelViewMatrixLoc,  false, flatten(t) );
+    gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
+}
+
+//----------------------------------------------------------------------------
+
+
+function lowerRing()
+{
+    var s = scalem(RING_WIDTH, LOWER_RING_HEIGHT, RING_WIDTH);
+    var instanceMatrix = mult( translate( 0.0, 0.5 * LOWER_RING_HEIGHT, 0.0 ), s);
+    var t = mult(modelViewMatrix, instanceMatrix);
+    gl.uniformMatrix4fv( modelViewMatrixLoc,  false, flatten(t) );
+    gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
+}
+
+//----------------------------------------------------------------------------
+
+function upperRing(){
+    var s = scalem(RING_WIDTH, UPPER_RING_HEIGHT, RING_WIDTH);
+    var instanceMatrix = mult( translate( 0.0, 0.5 * UPPER_RING_HEIGHT, 0.0 ), s);
+    var t = mult( modelViewMatrix, instanceMatrix);
+    gl.uniformMatrix4fv( modelViewMatrixLoc, false, flatten(t) );
+    gl.drawArrays( gl.TRIANGLES, 0, NumVertices);
+}
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+
+
+function middleLitte() {
+    var s = scalem(LITTL_WIDTH, MIDDLE_LITTL_HEIGHT, LITTL_WIDTH);
+    var instanceMatrix = mult(translate( 0.0, 0.5 * MIDDLE_LITTL_HEIGHT, 0.0 ),s);    
+    var t = mult(modelViewMatrix, instanceMatrix);
+    gl.uniformMatrix4fv( modelViewMatrixLoc,  false, flatten(t) );
+    gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
+}
+
+//----------------------------------------------------------------------------
+
+
+function lowerLittle()
+{
+    var s = scalem(LITTL_WIDTH, LOWER_LITTL_HEIGHT, LITTL_WIDTH);
+    var instanceMatrix = mult( translate( 0.0, 0.5 * LOWER_LITTL_HEIGHT, 0.0 ), s);
+    var t = mult(modelViewMatrix, instanceMatrix);
+    gl.uniformMatrix4fv( modelViewMatrixLoc,  false, flatten(t) );
+    gl.drawArrays( gl.TRIANGLES, 0, NumVertices );
+}
+
+//----------------------------------------------------------------------------
+
+function upperLitte(){
+    var s = scalem(LITTL_WIDTH, UPPER_LITTL_HEIGHT, LITTL_WIDTH);
+    var instanceMatrix = mult( translate( 0.0, 0.5 * UPPER_LITTL_HEIGHT, 0.0 ), s);
+    var t = mult( modelViewMatrix, instanceMatrix);
+    gl.uniformMatrix4fv( modelViewMatrixLoc, false, flatten(t) );
+    gl.drawArrays( gl.TRIANGLES, 0, NumVertices);
+}
+
+//----------------------------------------------------------------------------
+
+
 
 
 var render = function() {
@@ -272,16 +412,67 @@ var render = function() {
     mv = mult( mv, rotate( spinX, [1, 0, 0] ) );
     mv = mult( mv, rotate( spinY, [0, 1, 0] ) );
 
-    modelViewMatrix = mult(mv, rotate(theta[Base], 0, 1, 0 ));
+    modelViewMatrix = mult(mv, rotate(thetaFuck[Base], 0, 1, 0 ));
     base();
  
-    modelViewMatrix = mult(modelViewMatrix, translate(0.0, BASE_HEIGHT, 0.0)); 
-    modelViewMatrix = mult(modelViewMatrix, rotate(theta[LowerArm], 0, 0, 1 ));
-    lowerArm();
+    modelViewMatrix = mult(modelViewMatrix, translate(0.0, BASE_HEIGHT, 0.5)); 
+    modelViewMatrix = mult(modelViewMatrix, rotate(thetaFuck[MiddleMiddle], 0, 0, 1 ));
+    lowerMiddle();
 
-    modelViewMatrix  = mult(modelViewMatrix, translate(0.0, LOWER_ARM_HEIGHT, 0.0));
-    modelViewMatrix  = mult(modelViewMatrix, rotate(theta[UpperArm], 0, 0, 1) );
-    upperArm();
+    modelViewMatrix  = mult(modelViewMatrix, translate(0.0, LOWER_MIDDLE_HEIGHT, 0.0));
+    modelViewMatrix  = mult(modelViewMatrix, rotate(thetaFuck[LowerMiddle], 0, 0, 1) );
+    middleMiddle();
+
+    modelViewMatrix  = mult(modelViewMatrix, translate(0.0, MIDDLE_MIDDLE_HEIGHT, 0.0));
+    modelViewMatrix  = mult(modelViewMatrix, rotate(thetaFuck[LowerMiddle], 0, 0, 1) );
+    upperMiddle();
+
+    //----------------------------------------------------------------------------
+    //reset every thing
+    modelViewMatrix = mult(mv, rotate(thetaFuck[Base], 0, 1, 0 ));
+
+    modelViewMatrix = mult(modelViewMatrix, translate(0, BASE_HEIGHT, 1.5));
+
+    modelViewMatrix = mult(modelViewMatrix, rotate(thetaIndex[MiddleMiddle], 0, 0, 1 ));
+    lowerIndex();
+
+    modelViewMatrix  = mult(modelViewMatrix, translate(0.0, LOWER_INDEX_HEIGHT, 0.0));
+    modelViewMatrix  = mult(modelViewMatrix, rotate(thetaIndex[LowerMiddle], 0, 0, 1) );
+    middleIndex();
+
+    modelViewMatrix  = mult(modelViewMatrix, translate(0.0, MIDDLE_INDEX_HEIGHT, 0.0));
+    modelViewMatrix  = mult(modelViewMatrix, rotate(thetaIndex[LowerMiddle], 0, 0, 1) );
+    upperIndex();
+
+    //----------------------------------------------------------------------------
+    modelViewMatrix = mult(mv, rotate(thetaFuck[Base], 0, 1, 0 ));
+    modelViewMatrix = mult(modelViewMatrix, translate(0, BASE_HEIGHT, -0.5));
+
+    modelViewMatrix = mult(modelViewMatrix, rotate(thetaRing[MiddleMiddle], 0, 0, 1 ));
+    lowerRing();
+
+    modelViewMatrix  = mult(modelViewMatrix, translate(0.0, LOWER_RING_HEIGHT, 0.0));
+    modelViewMatrix  = mult(modelViewMatrix, rotate(thetaRing[LowerMiddle], 0, 0, 1) );
+    middleIndex();
+
+    modelViewMatrix  = mult(modelViewMatrix, translate(0.0, MIDDLE_RING_HEIGHT, 0.0));
+    modelViewMatrix  = mult(modelViewMatrix, rotate(thetaRing[LowerMiddle], 0, 0, 1) );
+    upperIndex();
+
+    //----------------------------------------------------------------------------
+    modelViewMatrix = mult(mv, rotate(thetaFuck[Base], 0, 1, 0 ));
+    modelViewMatrix = mult(modelViewMatrix, translate(0, BASE_HEIGHT, -1.5));
+
+    modelViewMatrix = mult(modelViewMatrix, rotate(thetaIndex[MiddleMiddle], 0, 0, 1 ));
+    lowerLittle();
+
+    modelViewMatrix  = mult(modelViewMatrix, translate(0.0, LOWER_LITTL_HEIGHT, 0.0));
+    modelViewMatrix  = mult(modelViewMatrix, rotate(thetaIndex[LowerMiddle], 0, 0, 1) );
+    middleLitte();
+
+    modelViewMatrix  = mult(modelViewMatrix, translate(0.0, MIDDLE_LITTL_HEIGHT, 0.0));
+    modelViewMatrix  = mult(modelViewMatrix, rotate(thetaIndex[LowerMiddle], 0, 0, 1) );
+    upperLitte();
 
     requestAnimFrame(render);
 }
