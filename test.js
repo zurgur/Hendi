@@ -77,8 +77,8 @@ var UPPER_LITTL_HEIGHT = 1;
 // paramiters for the size of thum finger
 
 var THUM_WIDTH = 1;
-var LOWER_THUM_HEIGHT = 4.8;
-var UPPER_THUM_HEIGHT = 3.4;
+var LOWER_THUM_HEIGHT = 2.4;
+var UPPER_THUM_HEIGHT = 1.8;
 
 // Shader transformation matrices
 
@@ -234,7 +234,7 @@ window.onload = function init() {
         currentBtn = "thum1";
     }
     document.getElementById("btnThum").onclick = function(){
-        currentBtn = "Thum";
+        currentBtn = "thum";
     }
     
     // Event listener for keyboard
@@ -261,6 +261,8 @@ window.onload = function init() {
                     thetaIndex[1] = Math.min(90, thetaIndex[1] + 5);
                 }else if(currentBtn === "little"){
                     thetaLittle[1] = Math.min(90, thetaLittle[1] + 5);
+                }else if(currentBtn === "thum"){
+                    thetaThum[1] = Math.min(50, thetaThum[1] + 5);
                 }
                 break;
             case 83:	// s - snýr neðri armi
@@ -272,6 +274,8 @@ window.onload = function init() {
                     thetaIndex[1] = Math.max(0, thetaIndex[1] - 5);
                 }else if(currentBtn === "little"){
                     thetaLittle[1] = Math.max(0, thetaLittle[1] - 5);
+                }else if(currentBtn === "thum"){
+                    thetaThum[1] = Math.max(0, thetaThum[1] - 5);
                 }
                 break;
             case 81:	// q - snýr efri og mið putta
@@ -283,6 +287,8 @@ window.onload = function init() {
                     thetaIndex[2] = Math.min(90, thetaIndex[2] + 5);
                 }else if(currentBtn === "little"){
                     thetaLittle[2] = Math.min(90, thetaLittle[2] + 5);
+                }else if(currentBtn === "thum"){
+                    thetaThum[2] = Math.min(120, thetaThum[2] + 5);
                 }
                 break;
             case 87:	// w - snýr neðri putta
@@ -294,6 +300,8 @@ window.onload = function init() {
                     thetaIndex[2] = Math.max(0, thetaIndex[2] - 5);
                 }else if(currentBtn === "little"){
                     thetaLittle[2] = Math.max(0, thetaLittle[2] - 5);
+                }else if(currentBtn === "thum"){
+                    thetaThum[2] = Math.max(0, thetaThum[2] - 5);
                 }
                 break;
          }
@@ -558,13 +566,13 @@ var render = function() {
 
     //----------------------------------------------------------------------------
     modelViewMatrix = mult(mv, rotate(thetaFuck[Base], 0, 1, 0 ));
-    modelViewMatrix = mult(modelViewMatrix, translate(0, 1, 2.5));
+    modelViewMatrix = mult(modelViewMatrix, translate(0, 1, 2.4));
 
-    modelViewMatrix = mult(modelViewMatrix, rotate(thetaThum[MiddleMiddle], 0, 0, 1 ));
+    modelViewMatrix = mult(modelViewMatrix, rotate(thetaThum[MiddleMiddle], -0.2, 0, 1 ));
     lowerThum();
 
-    modelViewMatrix  = mult(modelViewMatrix, translate(0.0, MIDDLE_LITTL_HEIGHT, 0.0));
-    modelViewMatrix  = mult(modelViewMatrix, rotate(thetaThum[LowerMiddle], 0, 0, 1) );
+    modelViewMatrix  = mult(modelViewMatrix, translate(0.0, LOWER_THUM_HEIGHT, 0.0));
+    modelViewMatrix  = mult(modelViewMatrix, rotate(thetaThum[LowerMiddle], -4.5, 0, 1) );
     upperThum();
 
     requestAnimFrame(render);
