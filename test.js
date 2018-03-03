@@ -9,7 +9,7 @@ var NumVertices = 36; //(6 faces)(2 triangles/face)(4 vertices/triangle)
 
 var movement = false;
 var spinX = 0;
-var spinY = 0;
+var spinY = -90;
 var origX;
 var origY;
 
@@ -91,12 +91,12 @@ var MiddleMiddle = 1;
 var LowerMiddle = 2;
 
 
-var thetaFuck = [ 0, 0, 0];
-var thetaIndex = [ 0, 0, 0];
-var thetaRing = [0, 0, 0];
-var thetaLittle = [0, 0, 0];
-var thetapinky = [0, 0, 0];
-var thetaThum = [0, 0, 0];
+var thetaFuck = [ 0, 0, 0, 0];
+var thetaIndex = [ 0, 0, 0, 0];
+var thetaRing = [0, 0, 0, 0];
+var thetaLittle = [0, 0, 0, 0];
+var thetapinky = [0, 0, 0, 0];
+var thetaThum = [0, 0, 0, -0.2];
 
 var angle = 0;
 
@@ -220,21 +220,145 @@ window.onload = function init() {
     // btn listeners
     document.getElementById("btnMiddle").onclick = function(){
         currentBtn = "middle";
+        thetaFuck[3] = 0;
     }
     document.getElementById("btnRing").onclick = function(){
         currentBtn = "ring";
+        thetaRing[3] = 0;
     }
     document.getElementById("btnIndex").onclick = function(){
         currentBtn = "index";
+        thetaIndex[3] = 0
     }
     document.getElementById("btnLittle").onclick = function(){
         currentBtn = "little";
-    }
-    document.getElementById("btnThum1").onclick = function(){
-        currentBtn = "thum1";
+        thetaLittle[3] = 0;
     }
     document.getElementById("btnThum").onclick = function(){
         currentBtn = "thum";
+        thetaThum[3] = -0.2;
+    }
+    document.getElementById("btnRock").onclick = function(){
+        var i = 0, max = 90, delay = 50, run;
+        thetaFuck[3] = 0;
+        thetaIndex[3] = 0;
+        thetaLittle[3] = 0;
+        thetaRing[3] = 0;
+        thetaThum[3] = -0.2;
+        run = function(){
+           if(i++ < max){
+            thetaRing[1] = Math.min(90, thetaRing[1] + 1);
+            thetaFuck[1] = Math.min(90, thetaFuck[1] + 1);
+            thetaRing[2] = Math.min(90, thetaRing[1] + 1);
+            thetaFuck[2] = Math.min(90, thetaFuck[1] + 1);
+            thetaThum[1] = Math.min(40, thetaThum[1] + 1);
+            thetaThum[2] = Math.min(100, thetaThum[2] + 1);
+            thetaIndex[1] = Math.max(0, thetaIndex[1] - 1);
+            thetaIndex[2] = Math.max(0, thetaIndex[2] - 1);
+            thetaLittle[1] = Math.max(0, thetaLittle[1] - 1);
+            thetaLittle[2] = Math.max(0, thetaLittle[2] - 1);
+            setTimeout(run, delay);
+           }
+        }
+        run();
+        return false;
+    }
+    document.getElementById("btnFist").onclick = function(){
+        var i = 0, max = 90, delay = 50, run;
+        thetaFuck[3] = 0;
+        thetaIndex[3] = 0;
+        thetaLittle[3] = 0;
+        thetaRing[3] = 0;
+        thetaThum[3] = -0.2;
+        run = function(){
+           if(i++ < max){
+            thetaRing[1] = Math.min(90, thetaRing[1] + 1);
+            thetaFuck[1] = Math.min(90, thetaFuck[1] + 1);
+            thetaRing[2] = Math.min(90, thetaRing[1] + 1);
+            thetaFuck[2] = Math.min(90, thetaFuck[1] + 1);
+            thetaThum[1] = Math.min(40, thetaThum[1] + 1);
+            thetaThum[2] = Math.min(100, thetaThum[2] + 1);
+            thetaLittle[1] = Math.min(90, thetaLittle[1] + 1);
+            thetaLittle[2] = Math.min(90, thetaLittle[2] + 1);
+            thetaIndex[1] = Math.min(90, thetaIndex[1] + 1);
+            thetaIndex[2] = Math.min(90, thetaIndex[2] + 1);
+
+            setTimeout(run, delay);
+           }
+        }
+        run();
+        return false;
+    }
+    document.getElementById("btnPoint").onclick = function(){
+        var i = 0, max = 90, delay = 50, run;
+        thetaFuck[3] = 0;
+        thetaIndex[3] = 0;
+        thetaLittle[3] = 0;
+        thetaRing[3] = 0;
+        thetaThum[3] = -0.2;
+        run = function(){
+           if(i++ < max){
+            thetaRing[1] = Math.min(90, thetaRing[1] + 1);
+            thetaFuck[1] = Math.min(90, thetaFuck[1] + 1);
+            thetaRing[2] = Math.min(90, thetaRing[1] + 1);
+            thetaFuck[2] = Math.min(90, thetaFuck[1] + 1);
+            thetaThum[1] = Math.min(40, thetaThum[1] + 1);
+            thetaThum[2] = Math.min(100, thetaThum[2] + 1);
+            thetaLittle[1] = Math.min(90, thetaLittle[1] + 1);
+            thetaLittle[2] = Math.min(90, thetaLittle[2] + 1);
+            thetaIndex[1] = Math.max(0, thetaIndex[1] - 1);
+            thetaIndex[2] = Math.max(0, thetaIndex[2] - 1);
+            setTimeout(run, delay);
+           }
+        }
+        run();
+        return false;
+    }
+    document.getElementById("btnVulkan").onclick = function(){
+        var i = 0, max = 20, delay = 50, run;
+       
+        run = function(){
+           if(i++ < max){
+            thetaRing[1] = Math.min(10, thetaRing[1] + 1);
+            thetaFuck[1] = Math.min(10, thetaFuck[1] + 1);
+            thetaLittle[1] = Math.min(10, thetaLittle[1] + 1);
+            thetaIndex[1] = Math.min(10, thetaIndex[1] + 1);
+            
+            thetaRing[3] = Math.max(-5, thetaRing[3] - 1);
+            thetaFuck[3] = Math.min(5, thetaFuck[3] + 1);
+            thetaLittle[3] = Math.min(-5, thetaFuck[3] - 1);
+            thetaIndex[3] = Math.min(5, thetaIndex[3] + 1)
+            thetaThum[1] = Math.max(0, thetaThum[1] - 1);
+            thetaThum[2] = Math.max(0, thetaThum[2] - 1);
+            setTimeout(run, delay);
+           }
+        }
+        run();
+        return false;
+    }
+
+    document.getElementById("btnGlenna").onclick = function(){
+        var i = 0, max = 20, delay = 50, run;
+        
+        run = function(){
+           if(i++ < max){
+            thetaRing[1] = Math.min(5, thetaRing[1] + 1);
+            thetaFuck[1] = Math.min(5, thetaFuck[1] + 1);
+            thetaLittle[1] = Math.min(10, thetaLittle[1] + 1);
+            thetaIndex[1] = Math.min(10, thetaIndex[1] + 1);
+            thetaThum[1] = Math.min(10, thetaThum[1] + 1);
+            
+            thetaRing[3] = Math.max(-5, thetaRing[3] - 1);
+            thetaFuck[3] = Math.min(5, thetaFuck[3] + 1);
+            thetaLittle[3] = Math.min(-5, thetaFuck[3] - 1);
+            thetaIndex[3] = Math.min(5, thetaIndex[3] + 1);
+            thetaThum[3] = Math.max(5, thetaThum[3] -1);
+            thetaThum[2] = Math.max(0, thetaThum[2] - 1);
+            setTimeout(run, delay);
+           }
+        }
+        run();
+        return false;
     }
     
     // Event listener for keyboard
@@ -262,7 +386,7 @@ window.onload = function init() {
                 }else if(currentBtn === "little"){
                     thetaLittle[1] = Math.min(90, thetaLittle[1] + 5);
                 }else if(currentBtn === "thum"){
-                    thetaThum[1] = Math.min(50, thetaThum[1] + 5);
+                    thetaThum[1] = Math.min(40, thetaThum[1] + 5);
                 }
                 break;
             case 83:	// s - snýr neðri armi
@@ -288,7 +412,7 @@ window.onload = function init() {
                 }else if(currentBtn === "little"){
                     thetaLittle[2] = Math.min(90, thetaLittle[2] + 5);
                 }else if(currentBtn === "thum"){
-                    thetaThum[2] = Math.min(120, thetaThum[2] + 5);
+                    thetaThum[2] = Math.min(100, thetaThum[2] + 5);
                 }
                 break;
             case 87:	// w - snýr neðri putta
@@ -506,7 +630,7 @@ var render = function() {
     base();
  
     modelViewMatrix = mult(modelViewMatrix, translate(0.0, BASE_HEIGHT, 0.5)); 
-    modelViewMatrix = mult(modelViewMatrix, rotate(thetaFuck[MiddleMiddle], 0, 0, 1 ));
+    modelViewMatrix = mult(modelViewMatrix, rotate(thetaFuck[MiddleMiddle], thetaFuck[3], 0, 1 ));
     lowerMiddle();
 
     modelViewMatrix  = mult(modelViewMatrix, translate(0.0, LOWER_MIDDLE_HEIGHT, 0.0));
@@ -523,7 +647,7 @@ var render = function() {
 
     modelViewMatrix = mult(modelViewMatrix, translate(0, BASE_HEIGHT, 1.5));
 
-    modelViewMatrix = mult(modelViewMatrix, rotate(thetaIndex[MiddleMiddle], 0, 0, 1 ));
+    modelViewMatrix = mult(modelViewMatrix, rotate(thetaIndex[MiddleMiddle], thetaIndex[3], 0, 1 ));
     lowerIndex();
 
     modelViewMatrix  = mult(modelViewMatrix, translate(0.0, LOWER_INDEX_HEIGHT, 0.0));
@@ -538,7 +662,7 @@ var render = function() {
     modelViewMatrix = mult(mv, rotate(thetaFuck[Base], 0, 1, 0 ));
     modelViewMatrix = mult(modelViewMatrix, translate(0, BASE_HEIGHT, -0.5));
 
-    modelViewMatrix = mult(modelViewMatrix, rotate(thetaRing[MiddleMiddle], 0, 0, 1 ));
+    modelViewMatrix = mult(modelViewMatrix, rotate(thetaRing[MiddleMiddle], thetaRing[3], 0, 1 ));
     lowerRing();
 
     modelViewMatrix  = mult(modelViewMatrix, translate(0.0, LOWER_RING_HEIGHT, 0.0));
@@ -553,7 +677,7 @@ var render = function() {
     modelViewMatrix = mult(mv, rotate(thetaFuck[Base], 0, 1, 0 ));
     modelViewMatrix = mult(modelViewMatrix, translate(0, BASE_HEIGHT, -1.5));
 
-    modelViewMatrix = mult(modelViewMatrix, rotate(thetaLittle[MiddleMiddle], 0, 0, 1 ));
+    modelViewMatrix = mult(modelViewMatrix, rotate(thetaLittle[MiddleMiddle], thetaLittle[3], 0, 1 ));
     lowerLittle();
 
     modelViewMatrix  = mult(modelViewMatrix, translate(0.0, LOWER_LITTL_HEIGHT, 0.0));
@@ -568,7 +692,7 @@ var render = function() {
     modelViewMatrix = mult(mv, rotate(thetaFuck[Base], 0, 1, 0 ));
     modelViewMatrix = mult(modelViewMatrix, translate(0, 1, 2.4));
 
-    modelViewMatrix = mult(modelViewMatrix, rotate(thetaThum[MiddleMiddle], -0.2, 0, 1 ));
+    modelViewMatrix = mult(modelViewMatrix, rotate(thetaThum[MiddleMiddle], thetaThum[3], 0, 1 ));
     lowerThum();
 
     modelViewMatrix  = mult(modelViewMatrix, translate(0.0, LOWER_THUM_HEIGHT, 0.0));
